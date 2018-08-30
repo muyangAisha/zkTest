@@ -20,23 +20,57 @@ public class EG8_NodeCacheSample {
 
     public static void main(String[] args) throws Exception {
         client.start();
+
+        /*final NodeCache cache = new NodeCache(client, path, false);
+        //ture:nodeCache在第一次启动的时候就会立刻从ZooKeeper上读取对应节点的内容,并保存在Cache中。
+        cache.start(true);
+        cache.getListenable().addListener(new NodeCacheListener() {
+            public void nodeChanged() throws Exception {
+                //System.out.println("new data: " + new String(cache.getCurrentData().getData()));
+                if (cache.getCurrentData() != null) {
+                    System.out.println("Node data not null, new data: " + new String(cache.getCurrentData().getData()));
+                } else {
+                    System.out.println("Node delete");
+                }
+            }
+        });*/
+
+
         client.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL)
                 .forPath(path, "init".getBytes());
 
         final NodeCache cache = new NodeCache(client, path, false);
 
-        //ture:nodeCache在一地刺启动的时候就会立刻从ZooKeeper上读取对应节点的内容,并保存在Cache中。
+        //ture:nodeCache在第一次启动的时候就会立刻从ZooKeeper上读取对应节点的内容,并保存在Cache中。
         cache.start(true);
         System.out.println("Cache Start, Get Data: " + new String(cache.getCurrentData().getData()));
 
         cache.getListenable().addListener(new NodeCacheListener() {
             public void nodeChanged() throws Exception {
-                System.out.println("Node data update, new data: " + new String(cache.getCurrentData().getData()));
+                //System.out.println("Node data update, new data: " + new String(cache.getCurrentData().getData()));
+                if (cache.getCurrentData() != null) {
+                    System.out.println("Node data not null, new data: " + new String(cache.getCurrentData().getData()));
+                } else {
+                    System.out.println("Node delete");
+                }
             }
         });
         client.setData().forPath(path, "u".getBytes());
-        Thread.sleep(1000);
+        Thread.sleep(1000 * 1);
         client.delete().deletingChildrenIfNeeded().forPath(path);
+
+        /*Thread.sleep(1000 * 10);
+        client.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL)
+                .forPath(path, "init2".getBytes());
+
+        Thread.sleep(1000 * 2);
+
+        client.close();
+        System.out.println("close");
+        Thread.sleep(1000 * 2);
+
+        client.delete().deletingChildrenIfNeeded().forPath(path);*/
+
         Thread.sleep(Integer.MAX_VALUE);
     }
 

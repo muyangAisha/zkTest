@@ -23,14 +23,18 @@ public class EG10_RecipesMasterSelect {
         client.start();
         LeaderSelector selector = new LeaderSelector(client, master_path, new LeaderSelectorListenerAdapter() {
             public void takeLeadership(CuratorFramework curatorFramework) throws Exception {
-                System.out.println("cyx成为Master角色");
+                System.out.println("cyx11111111111111111111111成为Master角色");
                 Thread.sleep(3000);
-                System.out.println("完成Master操作, 释放Master权利");
+                System.out.println("完成Master操作, 释放Master权利11111111111111111111111111");
+
+
             }
         });
 
         selector.autoRequeue();
         selector.start();
+
+//        selector.close();
         Thread.sleep(Integer.MAX_VALUE);
     }
 }

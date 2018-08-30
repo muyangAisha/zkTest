@@ -26,4 +26,4 @@ public class EG5_GetDataSample {
         System.out.println(new String(client.getData().storingStatIn(stat).forPath(path)));
 
     }
-}
+ }

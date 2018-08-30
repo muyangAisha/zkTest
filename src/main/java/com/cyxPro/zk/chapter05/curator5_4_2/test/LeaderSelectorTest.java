@@ -22,7 +22,7 @@ public class LeaderSelectorTest {
         List<CuratorFramework> clients = new ArrayList<CuratorFramework>();
 
         try {
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < 2; i++) {
                 CuratorFramework client = CuratorFrameworkFactory.builder()
                         .connectString("127.0.0.1:2181").sessionTimeoutMs(5000)
                         .retryPolicy(new ExponentialBackoffRetry(1000, 3))
@@ -47,7 +47,8 @@ public class LeaderSelectorTest {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            /*for(CuratorFramework client : clients){
+            /*System.out.println("in finally");
+            for(CuratorFramework client : clients){
                 CloseableUtils.closeQuietly(client);
             }
 
